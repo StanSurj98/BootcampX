@@ -1,0 +1,7 @@
+-- Total # of ARs for a particular student name 'Elliot Dickinson'
+
+SELECT COUNT(assistance_requests.*) as total_assistances, students.name as name
+FROM assistance_requests
+JOIN students ON students.id = student_id
+WHERE students.name = 'Elliot Dickinson'
+GROUP BY students.name;
