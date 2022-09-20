@@ -1,0 +1,14 @@
+-- Get the cohort with the longest average duration of assistance requests.
+-- Literally same as last query challenge but only return 1 row instead
+SELECT 
+cohorts.name as name, 
+AVG(completed_at - started_at) as average_assistance_time
+FROM
+assistance_requests
+JOIN
+students ON students.id = student_id
+JOIN
+cohorts ON cohorts.id = cohort_id
+GROUP BY cohorts.name
+ORDER BY average_assistance_time DESC
+LIMIT 1; -- This is how we just show the top one
