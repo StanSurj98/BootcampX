@@ -1,4 +1,4 @@
--- Get average duration of AR for each cohort
+-- Get average duration of a SINGLE AR for EACH cohort
 -- Select cohort name & avg time
 
 SELECT 
