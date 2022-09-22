@@ -9,12 +9,12 @@ const pool = new Pool({
 });
 
 // Accept cohort name as user input in CLI - CASE SENSITIVE
-const specifyCohort = process.argv[2];
-const values = [specifyCohort];
+const cohortName = process.argv[2];
+const values = [`%${cohortName}%`];
 
 // Get name of all teachers that assisted during a particular cohort
 // Code is from BootcampX 4_queries/12
-const text = `
+const queryString = `
   SELECT DISTINCT teachers.name as teachers, cohorts.name as cohort
   FROM
   teachers
@@ -25,12 +25,12 @@ const text = `
   JOIN
   cohorts ON cohorts.id = students.cohort_id
   WHERE 
-  cohorts.name = $1
+  cohorts.name LIKE $1
   ORDER BY 
   teachers;
 `;
 
-pool.query(text, values)
+pool.query(queryString, values)
   .then((res) => {
     // console.log(res.rows);
     res.rows.forEach((row) => {

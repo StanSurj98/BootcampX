@@ -11,21 +11,21 @@ const pool = new Pool({
 
 // So that we can use CLI - CASE SENSITIVE
 const specifyCohort = process.argv[2];
-const limit = process.argv[3];
+const limit = process.argv[3] || 5;
 // !! IMPORTANT !! The $ templating from the values array is to prevent SQL text hacking!! 
 // watch andy's lecture from sep21, 2022 about node-postgres for his info on this!! 
-const values = [specifyCohort, limit]
+const values = [`%${specifyCohort}%`, limit] // Note the %% for LIKE later in the query
 // Anyone can just delete your DB from the CLI if you use string template literals!!! 
-const text = `
+const queryString = `
   SELECT students.id AS student_id, students.name AS name, cohorts.name AS cohort
   FROM students JOIN cohorts ON cohorts.id = cohort_id
-  WHERE cohorts.name = $1
+  WHERE cohorts.name LIKE $1
   LIMIT $2;
-`; // also notice we use BACKTICKS `` for the text query
+`; // also notice we use BACKTICKS `` for the queryString
 
 // Queries SQL syntax and returns a promise object
 // pool.query(`SELECT... FROM... WHERE ${DO NOT DO THIS} LIMIT ${SERIOUSLY}`)
-pool.query(text, values) 
+pool.query(queryString, values) 
   .then((res) => {
     // !! NOTE !! 
     // Look at the response.ROWS property, otherwise just a huge response object
