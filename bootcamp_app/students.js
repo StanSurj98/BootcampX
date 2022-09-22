@@ -9,7 +9,7 @@ const pool = new Pool({
 });
 
 
-// So that we can use CLI
+// So that we can use CLI - CASE SENSITIVE
 const specifyCohort = process.argv[2];
 const limit = process.argv[3];
 // !! IMPORTANT !! The $ templating from the values array is to prevent SQL text hacking!! 
@@ -26,13 +26,13 @@ const text = `
 // Queries SQL syntax and returns a promise object
 // pool.query(`SELECT... FROM... WHERE ${DO NOT DO THIS} LIMIT ${SERIOUSLY}`)
 pool.query(text, values) 
-.then((res) => {
-  // !! NOTE !! 
-  // Look at the response.ROWS property, otherwise just a huge response object
-  console.log(res.rows);
+  .then((res) => {
+    // !! NOTE !! 
+    // Look at the response.ROWS property, otherwise just a huge response object
+    console.log(res.rows);
 
-  res.rows.forEach((user) => {
-    console.log(`${user.name} has an id of ${user.student_id} and was in the ${user.cohort} cohort`);
+    res.rows.forEach((user) => {
+      console.log(`${user.name} has an id of ${user.student_id} and was in the ${user.cohort} cohort`);
+    })
   })
-})
-.catch(err => console.error('query error', err.stack));
+  .catch(err => console.error('query error', err.stack));
